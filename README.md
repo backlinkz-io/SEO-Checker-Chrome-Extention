@@ -19,15 +19,11 @@ Complete meta information analysis at a glance:
 - **Copy Meta Info** - One-click copy of all meta data
 - **External Analysis** - Quick links to Ahrefs (Backlinks, Authority, Traffic)
 
-  
-
 ### 👁️ **Visual Overlays (SEO X-Ray)**
 See SEO data directly on the webpage with visual highlighters:
 - **Visualize Headings** - Draws colored boxes around H1-H6 tags to show structure.
 - **Highlight Missing Alt** - Adds red borders to images missing accessibility tags.
 - **Visualize Links** - Color-codes internal (Green) vs external (Blue) links.
-- 
-<img width="1920" height="1160" alt="Screenshot from 2025-11-19 20-12-57" src="https://github.com/user-attachments/assets/2a2e4c7e-093a-49ca-a67b-86f64d049ba5" />
 
 ### 📋 **Headings Tab**
 Heading structure analysis for content hierarchy:
@@ -59,8 +55,6 @@ Advanced link analysis with powerful filtering:
 - External DoFollow (blue with ↗ icon)
 - External NoFollow (red with ⊗ icon)
 
-<img width="1920" height="1160" alt="chrome-extention-links-feature" src="https://github.com/user-attachments/assets/bae9946b-b26f-4c22-a7c6-fda4ce1ea467" />
-
 ### 🖼️ **Images Tab**
 Image optimization analysis:
 - **Total Images Count** - Number of images on page
@@ -84,11 +78,6 @@ Structured data analysis supporting multiple formats:
 - **Copy Schema JSON** - Export schema data
 - **Test Rich Results** - Direct link to Google's Rich Results Test
 
-
-<img width="1899" height="1033" alt="ChromeExtentionSchemaFilter" src="https://github.com/user-attachments/assets/0f85c640-4e91-47f8-9315-0c89dc666aed" />
-
-  
-
 ### 🌐 **Hreflang Tab**
 International SEO analysis:
 - **Hreflang Tags Detection** - Identifies language/region targeting
@@ -110,10 +99,6 @@ Comprehensive local business information extraction (optimized for Google Maps):
 - **Map Embed Code** - Auto-generated iframe code for embedding maps
 - **Copy Business Info** - Export all business data
 - **Copy Map Code** - Copy ready-to-use embed code
-
-<img width="1920" height="1160" alt="backlinkz-chrome-extention-maps-feature" src="https://github.com/user-attachments/assets/546230d9-13fe-4cd6-8e30-04b66271c93e" />
-
-
 
 ## 🛠️ Additional Features
 

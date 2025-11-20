@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Set up Visualization buttons
   document.getElementById('visualize-headings').addEventListener('click', visualizeHeadings);
   document.getElementById('visualize-missing-alt').addEventListener('click', visualizeMissingAlt);
+  document.getElementById('visualize-alt-text').addEventListener('click', visualizeAltText);
   document.getElementById('visualize-links').addEventListener('click', visualizeLinks);
   
   // Set up Rich Results Test buttons
@@ -581,6 +582,7 @@ function getPageData() {
   allImages.forEach(img => {
     const alt = img.alt || '';
     const src = img.src || '';
+    const title = img.title || '';
     
     if (!alt) {
       data.images.missing_alt++;
@@ -589,7 +591,13 @@ function getPageData() {
     data.images.items.push({
       src: src,
       alt: alt,
-      hasAlt: alt.length > 0
+      title: title,
+      hasAlt: alt.length > 0,
+      width: img.width,     // Rendered width
+      height: img.height,   // Rendered height
+      naturalWidth: img.naturalWidth, // Actual image width
+      naturalHeight: img.naturalHeight, // Actual image height
+      loading: img.loading || 'eager'
     });
   });
   
@@ -1199,8 +1207,30 @@ document.getElementById('description-length').innerHTML = data.description ?
   data.images.items.forEach(image => {
     const imageItem = document.createElement('div');
     imageItem.className = 'link-item';
-    imageItem.innerHTML = `<div><strong>Alt:</strong> ${image.hasAlt ? image.alt : '<span class="missing">Missing</span>'}</div>
-                           <div>${image.src}</div>`;
+    
+    // Calculate dimension info
+    let dimInfo = `${image.width}x${image.height}`;
+    let dimStyle = '';
+    
+    // Highlight if image is significantly scaled down (performance issue)
+    if (image.naturalWidth > 0 && (image.width < image.naturalWidth / 1.5)) {
+      dimInfo += ` (Natural: ${image.naturalWidth}x${image.naturalHeight})`;
+      dimStyle = 'color: #ff9800; font-weight: 500;'; // Orange warning for oversized images
+    } else if (image.naturalWidth > 0) {
+      dimInfo += ` (Natural: ${image.naturalWidth}x${image.naturalHeight})`;
+    }
+    
+    imageItem.innerHTML = `
+      <div style="margin-bottom: 6px;">
+        <strong>Alt:</strong> ${image.hasAlt ? image.alt : '<span class="missing">Missing</span>'}
+      </div>
+      ${image.title ? `<div style="margin-bottom: 4px; font-size: 12px; color: var(--text-color);"><strong>Title:</strong> ${image.title}</div>` : ''}
+      <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 6px; display: flex; gap: 15px;">
+        <span style="${dimStyle}" title="Rendered Size (Actual File Size)">📏 ${dimInfo}</span>
+        <span title="Loading Attribute">⚡ ${image.loading}</span>
+      </div>
+      <div style="font-size: 11px; color: #4fc3f7; word-break: break-all;">${image.src}</div>
+    `;
     imagesList.appendChild(imageItem);
   });
   
@@ -2407,6 +2437,75 @@ function visualizeMissingAlt() {
         });
         
         return `Found ${count} images without ALT text`;
+      }
+    });
+  });
+}
+
+function visualizeAltText() {
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.scripting.insertCSS({
+      target: {tabId: tabs[0].id},
+      css: `
+        .backlinkz-overlay-alt-text {
+          outline: 3px solid #339af0 !important;
+          position: relative !important;
+        }
+        .backlinkz-overlay-alt-text-label {
+          position: absolute;
+          background: #339af0;
+          color: white;
+          padding: 4px 8px;
+          font-size: 12px;
+          font-weight: bold;
+          z-index: 10000;
+          border-radius: 4px;
+          pointer-events: none;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+          max-width: 300px;
+          word-wrap: break-word;
+        }
+      `
+    });
+    
+    chrome.scripting.executeScript({
+      target: {tabId: tabs[0].id},
+      function: function() {
+        const existing = document.querySelectorAll('.backlinkz-overlay-alt-text');
+        if (existing.length > 0) {
+          existing.forEach(el => el.classList.remove('backlinkz-overlay-alt-text'));
+          document.querySelectorAll('.backlinkz-overlay-alt-text-label').forEach(el => el.remove());
+          return 'Visualizations removed';
+        }
+        
+        const images = document.querySelectorAll('img');
+        let count = 0;
+        
+        images.forEach(img => {
+          const alt = img.getAttribute('alt');
+          img.classList.add('backlinkz-overlay-alt-text');
+          
+          // Create a floating label
+          const label = document.createElement('div');
+          label.className = 'backlinkz-overlay-alt-text-label';
+          
+          if (alt && alt.trim() !== '') {
+            label.textContent = 'ALT: ' + alt;
+          } else {
+            label.textContent = 'MISSING ALT';
+            label.style.backgroundColor = '#ff6b6b'; // Use warning color for missing alt
+          }
+          
+          // Position logic
+          const rect = img.getBoundingClientRect();
+          label.style.top = (rect.top + window.scrollY) + 'px';
+          label.style.left = (rect.left + window.scrollX) + 'px';
+          document.body.appendChild(label);
+          
+          count++;
+        });
+        
+        return `Showed alt text for ${count} images`;
       }
     });
   });
