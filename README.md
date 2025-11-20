@@ -67,7 +67,9 @@ Image optimization analysis:
 - **Missing Alt Text Detection** - Identifies accessibility issues
 - **Full Images List** - All images with source URLs
 - **Copy Image Links** - Export image URLs for further analysis
-- **Visualizer** - Highlight broken/missing alt images on the page
+- **Visualizer** - Highlight broken/missing alt images on the page and see alt texts on top of images
+- **Image Size Checker** See the size of images and if they are lazy loaded or auto loaded
+- 
 
 ### 📱 **Social Media Tab**
 Social sharing optimization:
