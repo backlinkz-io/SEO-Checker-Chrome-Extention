@@ -67,9 +67,7 @@ Image optimization analysis:
 - **Missing Alt Text Detection** - Identifies accessibility issues
 - **Full Images List** - All images with source URLs
 - **Copy Image Links** - Export image URLs for further analysis
-- **Visualizer** - Highlight broken/missing alt images on the page and see alt texts on top of images
-- **Image Size Checker** See the size of images and if they are lazy loaded or auto loaded
-- 
+- **Visualizer** - Highlight broken/missing alt images on the page
 
 ### 📱 **Social Media Tab**
 Social sharing optimization:
@@ -195,9 +193,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## ©️ Copyright
 
-Copyright (c) 2025 [Backlinkz.io](https://backlinkz.io). All rights reserved.
-
-This project is part of the Backlinkz.io SEO toolkit.
 Copyright (c) 2025 [Backlinkz.io](https://backlinkz.io). All rights reserved.
 
 This project is part of the Backlinkz.io SEO toolkit.
